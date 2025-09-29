@@ -1,5 +1,10 @@
 # NoSleep.jl
 
+[![Autotest](https://github.com/hetalang/NoSleep.jl/actions/workflows/ci.yml/badge.svg)](https://github.com/hetalang/NoSleep.jl/actions/workflows/ci.yml)
+<!--[![version](https://juliahub.com/docs/NoSleep/version.svg)](https://juliahub.com/ui/Packages/NoSleep/IIE0h)-->
+[![GitHub issues](https://img.shields.io/github/issues/hetalang/NoSleep.jl.svg)](https://GitHub.com/hetalang/NoSleep.jl/issues/)
+[![GitHub license](https://img.shields.io/github/license/hetalang/NoSleep.jl.svg)](https://github.com/hetalang/NoSleep.jl/blob/master/LICENSE)
+
 Prevent your machine from going to sleep while long-running Julia jobs are executing — and automatically restore normal behavior when they finish or fail.
 
 - **Cross-platform backend**  
