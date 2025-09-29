@@ -24,7 +24,7 @@ jobs:
           # exotic architectures
           - {version: 'lts', os: ubuntu-22.04-arm, arch: aarch64, allow_failure: true}
           - {version: 'lts', os: macos-13, arch: x64}
-      steps:
+    steps:
       - uses: actions/checkout@v4
 
       - uses: julia-actions/setup-julia@v2
