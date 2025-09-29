@@ -22,7 +22,7 @@ powercfg /requests
 
 module NoSleep
 
-export @nosleep, nosleep_on, nosleep_off, with_nosleep, backend_name
+export @nosleep, nosleep_on, nosleep_off, with_nosleep
 
 @static if Sys.iswindows()
     include("backend-windows.jl")
@@ -43,8 +43,6 @@ function nosleep_off()
     _nosleep_off()
     return
 end
-
-backend_name() = _backend_name
 
 # insurance for "normal" process exit
 atexit(() -> (try nosleep_off() catch; end))

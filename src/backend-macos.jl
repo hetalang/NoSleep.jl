@@ -1,11 +1,29 @@
 # macOS: default keep-awake through `caffeinate` utility.
-# (In the future, ccall to IOKit: IOPMAssertionCreateWithName can be added)
+# (Future: switch to IOPMAssertion via ccall for even tighter control.)
 
-const _backend_name = "macos:caffeinate"
-const _nosleep_proc_ref = Ref{Base.Process}()
+const _nosleep_proc_ref = Ref{Union{Nothing, Base.Process}}(nothing)
 
-function _have_caffeinate()
-    Sys.which("caffeinate") !== nothing
+_have_caffeinate() = Sys.which("caffeinate") !== nothing
+
+# small helper: robustly terminate a process without blocking forever
+function _terminate!(p::Base.Process; grace_ms::Int=500)
+    try
+        # First try a graceful TERM
+        kill(p)  # SIGTERM
+        # Poll for a short grace period
+        steps = max(1, div(grace_ms, 50))
+        for _ in 1:steps
+            # `process_running` returns false when the process has exited
+            if !Base.process_running(p)
+                return
+            end
+            sleep(0.05)
+        end
+        # If still alive, use SIGKILL
+        kill(p, 9)
+    catch
+        # Ignore teardown errors
+    end
 end
 
 function _nosleep_on(; keep_display::Bool=false)
@@ -13,10 +31,21 @@ function _nosleep_on(; keep_display::Bool=false)
         @warn "caffeinate not found; no-sleep may not work. Using stub."
         return
     end
-    # -d keeps display awake, -i keeps system from idle sleep
-    flags = keep_display ? `-di` : `-i`
-    cmd = `caffeinate $flags`
-    if isnothing(_nosleep_proc_ref[])
+
+    # Cleanup a dead/finished process in the ref, if any
+    current = _nosleep_proc_ref[]
+    if current isa Base.Process && !Base.process_running(current)
+        _nosleep_proc_ref[] = nothing
+        current = nothing
+    end
+
+    if isnothing(current)
+        # Use a long but finite timeout so the runner won't be stuck forever if teardown fails
+        # -i : prevent idle sleep, -d : also keep display awake when requested
+        # -t : seconds; pick something long enough for typical CI runs (e.g., 2 hours)
+        timeout_sec = 7200
+        cmd = keep_display ? `caffeinate -d -i -t $timeout_sec` : `caffeinate -i -t $timeout_sec`
+        # Start detached; don't wait
         _nosleep_proc_ref[] = run(cmd; wait=false)
     end
     return
@@ -25,10 +54,10 @@ end
 function _nosleep_off()
     p = _nosleep_proc_ref[]
     if p isa Base.Process
-        try
-            kill(p)
-        catch
+        if Base.process_running(p)
+            _terminate!(p; grace_ms=800)  # short grace, then SIGKILL
         end
+        # do NOT call wait(p) here; just clear the ref
         _nosleep_proc_ref[] = nothing
     end
     return

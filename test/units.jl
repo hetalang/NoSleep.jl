@@ -1,7 +1,5 @@
 
 @testset "NoSleep.jl basic API" begin
-    # backend name must be a String
-    @test isa(NoSleep.backend_name(), String)
 
     # on/off should run without error
     @test_nowarn NoSleep.nosleep_on()
