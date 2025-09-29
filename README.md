@@ -60,6 +60,10 @@ with_nosleep(; keep_display=true, timeout_seconds=600) do
 end
 ```
 
+## Authors
+
+- [Evgeny Metelkin](https://metelkin.me)
+
 ## License
 
 MIT (see [LICENSE](LICENSE)).
