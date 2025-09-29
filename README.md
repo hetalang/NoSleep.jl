@@ -18,39 +18,33 @@ Prevent your machine from going to sleep while long-running Julia jobs are execu
 
 ```julia
 ] add NoSleep
+
+using NoSleep
 ```
 
 ## Usage
 
-Macros style:
+__Macros style:__
 
 ```julia
-using NoSleep
-
 @nosleep begin
     # long-running code here
 end
 ```
 
-Block style:
+__Block style:__
 
 ```julia
-using NoSleep
-
 with_nosleep() do
     # long-running code here
 end
 ```
 
-Manual style:
+__Manual style:__
 
 ```julia
-using NoSleep
-
 nosleep_on()
-
 # long-running code here
-
 nosleep_off()
 ```
 
