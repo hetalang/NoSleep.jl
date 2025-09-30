@@ -1,25 +1,6 @@
-#=
-using NoSleep
-# 1
-with_nosleep() do
-    ...
-end
-
-# 2
-nosleep_on()
-...
-nosleep_off()
-
-№ 3
-@nosleep begin
-    ...
-end
-
-# to check
-in PowerShell (admin)
-powercfg /requests
-=#
-
+"""
+A Julia package to prevent the system from going to sleep while a long-running task is executing.
+"""
 module NoSleep
 
 export @nosleep, nosleep_on, nosleep_off, with_nosleep
@@ -34,11 +15,23 @@ else
     include("backend-stub.jl")
 end
 
+"""
+    nosleep_on(; keep_display::Bool=false)
+
+Prevent the system from going to sleep. System will restore normal sleep behavior when `nosleep_off()` is called 
+or the Julia process exits.
+If `keep_display` is `true`, the display will also be kept on.
+"""
 function nosleep_on(; keep_display::Bool=false)
     _nosleep_on(; keep_display)
     return
 end
 
+"""
+    nosleep_off()
+
+Restore normal sleep behavior from `nosleep_on()`.
+"""
 function nosleep_off()
     _nosleep_off()
     return
@@ -47,6 +40,12 @@ end
 # insurance for "normal" process exit
 atexit(() -> (try nosleep_off() catch; end))
 
+
+"""
+    @nosleep expr
+
+A macro to run `expr` with `nosleep_on()` and `nosleep_off()`.
+"""
 macro nosleep(ex)
     return quote
         NoSleep.nosleep_on()
@@ -58,7 +57,12 @@ macro nosleep(ex)
     end
 end
 
+"""
+    with_nosleep(f::Function; keep_display::Bool=false, timeout_seconds::Real=Inf)
 
+Run function `f` with `nosleep_on()` and `nosleep_off()`. 
+If `timeout_seconds` is finite, the `nosleep_off()` will be called after the timeout even if `f` is still running.
+"""
 function with_nosleep(f::Function; keep_display::Bool=false, timeout_seconds::Real=Inf)
     nosleep_on(; keep_display)
 
