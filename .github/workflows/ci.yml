@@ -15,15 +15,15 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {version: 'lts', os: windows-latest, arch: x64}
-          - {version: 'lts', os: ubuntu-latest,  arch: x64}
-          - {version: 'lts', os: macos-latest,   arch: aarch64}
-          - {version: '1', os: windows-latest, arch: x64}
-          - {version: '1', os: ubuntu-latest,  arch: x64}
-          - {version: '1', os: macos-latest,   arch: aarch64}
+          - {version: 'lts', os: windows-latest, arch: x64, cli: 1}
+          - {version: 'lts', os: ubuntu-latest, arch: x64, cli: 0}
+          - {version: 'lts', os: macos-latest, arch: aarch64, cli: 1}
+          - {version: '1', os: windows-latest, arch: x64, cli: 1}
+          - {version: '1', os: ubuntu-latest, arch: x64, cli: 0}
+          - {version: '1', os: macos-latest, arch: aarch64, cli: 1}
           # exotic architectures
-          - {version: 'lts', os: ubuntu-22.04-arm, arch: aarch64, allow_failure: true}
-          - {version: 'lts', os: macos-13, arch: x64}
+          - {version: 'lts', os: ubuntu-22.04-arm, arch: aarch64, cli: 0}
+          - {version: 'lts', os: macos-13, arch: x64, cli: 1}
     steps:
       - uses: actions/checkout@v4
 
@@ -40,5 +40,5 @@ jobs:
 
       - uses: julia-actions/julia-runtest@v1
         env:
-          NOSLEEP_CLI_TESTS: '0' # Keep CLI integration tests OFF
+          NOSLEEP_CLI_TESTS: ${{ matrix.cli }}
           
