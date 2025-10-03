@@ -1,7 +1,7 @@
 # NoSleep.jl
 
 [![Autotest](https://github.com/hetalang/NoSleep.jl/actions/workflows/ci.yml/badge.svg)](https://github.com/hetalang/NoSleep.jl/actions/workflows/ci.yml)
-<!--[![version](https://juliahub.com/docs/NoSleep/version.svg)](https://juliahub.com/ui/Packages/NoSleep/IIE0h)-->
+[![version](https://juliahub.com/docs/General/NoSleep/stable/version.svg)](https://juliahub.com/ui/Packages/General/NoSleep)
 [![GitHub issues](https://img.shields.io/github/issues/hetalang/NoSleep.jl.svg)](https://GitHub.com/hetalang/NoSleep.jl/issues/)
 [![GitHub license](https://img.shields.io/github/license/hetalang/NoSleep.jl.svg)](https://github.com/hetalang/NoSleep.jl/blob/master/LICENSE)
 
