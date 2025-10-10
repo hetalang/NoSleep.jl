@@ -27,6 +27,12 @@ function time_interval_monitor(; minutes::Int=60, interval::Real=60)
             ts = now()
             println("[$(Dates.hour(ts)):$(Dates.minute(ts)):$(Dates.second(ts))] iter=$i  delta=$(round(delta)) s")
         end
+    catch e
+        if e isa InterruptException
+            println("\n^C Stopped by user.")
+        else
+            rethrow()
+        end
     finally
         @info "Sleep monitor finished."
     end
