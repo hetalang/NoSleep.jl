@@ -8,7 +8,7 @@
 Prevent your machine from going to sleep while long-running Julia jobs are executing — and automatically restore normal behavior when they finish or fail.
 
 - **Cross-platform backend**  
-  - Windows: `SetThreadExecutionState`
+  - Windows: `PowerRequest`
   - macOS: `caffeinate`
   - Linux: `systemd-inhibit`
 - **Simple API**: block-style or manual on/off.
