@@ -50,8 +50,24 @@ nosleep_off()
 
 ## Extra options
 
-- Keep display awake: `keep_display=true` to prevent screen from going to sleep (default is `false`).
-- Timeout: `timeout_seconds=<seconds>` to automatically disable nosleep after a certain time (default is `Inf`, meaning no timeout).
+### keep_display
+
+The `keep_display` option prevents the screen from going to sleep (default is `false`).
+
+```julia
+@nosleep keep_display=true begin
+    # long-running code here
+end
+```
+
+```julia
+with_nosleep(keep_display=true) do
+    # long-running code here
+end
+```
+
+### timeout_seconds (experimental)
+The `timeout_seconds` option sets a timeout in seconds after which the nosleep mode is automatically disabled (default is `Inf`, meaning no timeout).
 
 ```julia
 with_nosleep(; keep_display=true, timeout_seconds=600) do

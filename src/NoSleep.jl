@@ -40,15 +40,45 @@ end
 # insurance for "normal" process exit
 atexit(() -> (try nosleep_off() catch; end))
 
-
 """
-    @nosleep expr
+    @nosleep [keep_display[=true]] expr
 
-A macro to run `expr` with `nosleep_on()` and `nosleep_off()`.
+Run `expr` with `nosleep_on()` active, and automatically call `nosleep_off()` when finished.
+
+By default, only system sleep is prevented. To also keep the screen awake, pass `keep_display`:
+
+Examples
+--------
+    @nosleep begin
+        long_task()
+    end
+
+    @nosleep keep_display=true begin
+        long_task()   # prevents sleep and keeps display on
+    end
 """
-macro nosleep(ex)
+macro nosleep(args...)
+    isempty(args) && error("@nosleep requires a block")
+
+    # Last argument is the block
+    ex = args[end]
+
+    # keep_display: default false
+    keep_display_ex = :(false)
+
+    # If any arguments before the block, they are options
+    for a in args[1:end-1]
+        if a === :keep_display
+            keep_display_ex = :(true)
+        elseif a isa Expr && a.head == :(=) && a.args[1] === :keep_display
+            keep_display_ex = a.args[2]
+        else
+            error("@nosleep: only 'keep_display' is supported")
+        end
+    end
+
     return quote
-        NoSleep.nosleep_on()
+        NoSleep.nosleep_on(; keep_display=$(esc(keep_display_ex)))
         try
             $(esc(ex))
         finally
