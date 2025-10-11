@@ -59,6 +59,16 @@ with_nosleep(; keep_display=true, timeout_seconds=600) do
 end
 ```
 
+## Known limitations and recommendations
+
+*Some sleep behaviors are enforced by the operating system and cannot be overridden by NoSleep.jl or any similar tools.*
+
+1. **Closing the laptop lid or pressing the power button** will force the system into sleep regardless of active sleep-prevent requests of `NoSleep.jl`.
+
+1. On Windows devices with **Modern Standby (S0ix) running on battery power (DC mode)** the OS may ignore sleep prevention signals after a 5 minutes of inactivity if the screen is turned off.
+    - **Connect charger (AC mode)** to avoid this.
+    - **OR use** `keep_display=true` to keep the screen awake.
+
 ## Authors
 
 - [Evgeny Metelkin](https://metelkin.me)
