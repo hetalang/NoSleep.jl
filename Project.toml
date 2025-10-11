@@ -1,7 +1,7 @@
 name = "NoSleep"
 uuid = "95f667b2-49e0-4955-80bd-390d74d178c7"
 authors = ["Evgeny Metelkin <evgeny.metelkin@gmail.com>"]
-version = "0.1.0"
+version = "0.2.0"
 
 [compat]
 julia = "1.10"
