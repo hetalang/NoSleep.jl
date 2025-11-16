@@ -2,11 +2,11 @@ using Test
 using NoSleep
 
 # Enable these integration checks only when explicitly requested
-const RUN_CLI_CHECKS = get(ENV, "NOSLEEP_CLI_TESTS", "0") == "1"
+const RUN_TEST = get(ENV, "INTEGRATION_TESTS", "0") == "1"
 
 @testset "CLI integration checks (opt-in)" begin
-    if !RUN_CLI_CHECKS
-        @info "CLI checks are disabled (set NOSLEEP_CLI_TESTS=1 to enable)."
+    if !RUN_TEST
+        @info "CLI checks are disabled (set INTEGRATION_TESTS=1 to enable)."
         return
     end
 
