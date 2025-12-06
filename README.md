@@ -4,6 +4,8 @@
 [![version](https://juliahub.com/docs/General/NoSleep/stable/version.svg)](https://juliahub.com/ui/Packages/General/NoSleep)
 [![GitHub issues](https://img.shields.io/github/issues/hetalang/NoSleep.jl.svg)](https://GitHub.com/hetalang/NoSleep.jl/issues/)
 [![GitHub license](https://img.shields.io/github/license/hetalang/NoSleep.jl.svg)](https://github.com/hetalang/NoSleep.jl/blob/master/LICENSE)
+![Julia package downloads](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fjuliapkgstats.com%2Fapi%2Fv1%2Fmonthly_downloads%2FNoSleep&query=total_requests&label=downloads%20%28month%29)
+
 
 Prevent your machine from going to sleep while long-running Julia jobs are executing — and automatically restore normal behavior when they finish or fail.
 
